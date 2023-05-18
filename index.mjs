@@ -15,16 +15,19 @@ export const handler = async (event, context, callback) => {
     const { inventoryApi } = client;
 
     const data = await JSON.parse(event.body);
-    const ids = data.ids;
+    const changes = data.changes;
 
-    const res = await inventoryApi.batchRetrieveInventoryCounts({
-      catalogObjectIds: ids,
+    const res = await inventoryApi.batchChangeInventory({
+      idempotencyKey: crypto.randomUUID(),
+      changes,
     });
     const { counts } = res.result;
-    responseObject = {
-      result: "success",
-      counts,
-    };
+    if (counts.length > 0) {
+      responseObject = {
+        result: "success",
+        counts,
+      };
+    } else throw new Error("No counts were changed :(");
   } catch (error) {
     if (error instanceof ApiError) {
       error.result.errors.forEach(function (e) {
