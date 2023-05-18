@@ -1,6 +1,7 @@
 // This lambda function queries Square the inventory quantities for a given array of ids
 
 import { Client, Environment, ApiError } from "square";
+import crypto from "crypto";
 
 export const handler = async (event, context, callback) => {
   let responseObject;
