@@ -17,6 +17,7 @@ export const handler = async (event, context, callback) => {
 
     const data = await JSON.parse(event.body);
     const changes = data.changes;
+    console.log(changes);
 
     const res = await inventoryApi.batchChangeInventory({
       idempotencyKey: crypto.randomUUID(),
