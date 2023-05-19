@@ -18,11 +18,12 @@ export const handler = async (event, context, callback) => {
     const data = await JSON.parse(event.body);
     const changes = data.changes;
     console.log(changes);
-
-    const res = await inventoryApi.batchChangeInventory({
+    const transferObj = {
       idempotencyKey: crypto.randomUUID(),
-      changes,
-    });
+      changes: changes,
+    };
+    console.log(transferObj);
+    const res = await inventoryApi.batchChangeInventory(transferObj);
     const { counts } = res.result;
     if (counts.length > 0) {
       responseObject = {
