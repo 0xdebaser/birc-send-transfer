@@ -21,7 +21,7 @@ export const handler = async (event, context, callback) => {
       idempotencyKey: crypto.randomUUID(),
       changes,
     };
-    console.log(transferObj);
+    console.log(transferObj.changes[0]);
     const res = await inventoryApi.batchChangeInventory(transferObj);
     const { counts } = res.result;
     if (counts.length > 0) {
